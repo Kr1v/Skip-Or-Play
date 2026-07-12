@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulseline — Join</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+  .center-screen{ min-height: 100vh; display:flex; align-items:center; justify-content:center; }
+  .pfp-picker{ display:flex; align-items:center; gap:16px; }
+  .pfp-preview{
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--bg-raised); border: 2px dashed var(--card-border);
+    background-size: cover; background-position:center;
+    display:flex; align-items:center; justify-content:center;
+    color: var(--text-dim); font-size: 22px; flex-shrink:0;
+  }
+  .file-btn{ position:relative; overflow:hidden; }
+  .file-btn input[type=file]{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+  .waiting-pulse{
+    width: 14px; height:14px; border-radius:50%; background: var(--brand);
+    box-shadow: 0 0 0 0 rgba(123,97,255,0.6);
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(123,97,255,0.6); }
+    70%{ box-shadow: 0 0 0 18px rgba(123,97,255,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(123,97,255,0); }
+  }
+  #stageZones .zone{ min-height: 200px; }
+  .my-hint{ text-align:center; color: var(--text-dim); font-size: 12px; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ================= JOIN FORM ================= -->
+<div id="viewJoin" class="center-screen" style="display:none;">
+  <div class="wrap" style="max-width: 420px;">
+    <div class="eyebrow" style="justify-content:center;">Joining <span id="joinSessionName" class="mono"></span></div>
+    <div class="card stack" style="margin-top:14px;">
+      <div class="pfp-picker">
+        <div class="pfp-preview" id="pfpPreview">?</div>
+        <button class="btn btn-ghost file-btn" type="button">
+          Choose photo
+          <input type="file" id="pfpInput" accept="image/*">
+        </button>
+      </div>
+      <div>
+        <label class="field-label">Your name</label>
+        <input type="text" id="nameInput" placeholder="What should we call you?">
+      </div>
+      <button class="btn btn-primary btn-block" id="joinBtn">Join session</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= WAITING ROOM ================= -->
+<div id="viewWaiting" class="center-screen" style="display:none;">
+  <div class="wrap" style="max-width: 420px; text-align:center;">
+    <div id="myChipWrap" style="display:flex; justify-content:center; margin-bottom:18px;"></div>
+    <h2>You're in</h2>
+    <p style="color:var(--text-dim); margin-top:8px;">Hang tight — the host will start the session soon.</p>
+    <div style="display:flex; justify-content:center; margin-top:22px;"><div class="waiting-pulse"></div></div>
+  </div>
+</div>
+
+<!-- ================= LIVE VOTING ================= -->
+<div id="viewStage" class="wrap" style="display:none;">
+  <div class="now-playing">
+    <div class="idx mono" id="stageIdx">SONG 1 / 1</div>
+    <h2 id="stageTitle">—</h2>
+    <div class="artist" id="stageArtist"></div>
+  </div>
+
+  <div id="stageZones" class="trackline">
+    <div class="zones">
+      <div class="zone skip" data-choice="skip"><div class="zone-label">Skip</div><div class="zone-count" data-count="skip">0</div></div>
+      <div class="zone neutral" data-choice="neutral"><div class="zone-label">Neutral</div><div class="zone-count" data-count="neutral">0</div></div>
+      <div class="zone play" data-choice="play"><div class="zone-label">Play</div><div class="zone-count" data-count="play">0</div></div>
+    </div>
+  </div>
+  <div class="my-hint">Tap a zone to move your pfp — you can change your mind anytime.</div>
+</div>
+
+<!-- ================= ENDED ================= -->
+<div id="viewEnded" class="center-screen" style="display:none;">
+  <div class="wrap" style="max-width:420px; text-align:center;">
+    <h2>That's a wrap 🎧</h2>
+    <p style="color:var(--text-dim); margin-top:8px;">Thanks for voting. The host has ended this session.</p>
+  </div>
+</div>
+
+<!-- ================= NOT FOUND ================= -->
+<div id="viewMissing" class="center-screen" style="display:none;">
+  <div class="wrap" style="max-width:420px; text-align:center;">
+    <h2>Session not found</h2>
+    <p style="color:var(--text-dim); margin-top:8px;">Double check the link the host sent you.</p>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="common.js"></script>
+<script src="join.js"></script>
+</body>
+</html>

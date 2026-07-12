@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulseline — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+  .header{ display:flex; align-items:center; justify-content:space-between; margin-bottom: 22px; }
+  .brand{ font-family: var(--font-display); font-weight:700; font-size: 20px; }
+  #songBuilder .add-row{ display:flex; gap:8px; }
+  #songBuilder .add-row .t{ flex: 2; }
+  #songBuilder .add-row .a{ flex: 1.4; }
+  #stageZones .zones{ min-height: 220px; }
+  .participant-grid{ display:flex; flex-wrap:wrap; gap: 18px 12px; padding: 6px 2px; }
+  .live-controls{ display:flex; gap:10px; margin-top:16px; }
+  .live-controls .btn{ flex:1; }
+  .results-song{ margin-bottom: 14px; }
+  .results-bar{ display:flex; height: 10px; border-radius: 999px; overflow:hidden; margin-top:6px; background: var(--bg-raised); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="brand">Pulseline <span style="color:var(--text-dim); font-weight:400; font-size:14px;">/ admin</span></div>
+    <span id="statusPill" class="pill lobby">—</span>
+  </div>
+
+  <!-- ================= CREATE ================= -->
+  <div id="viewCreate" class="stack" style="display:none;">
+    <div class="eyebrow">New session</div>
+    <div class="card stack">
+      <div>
+        <label class="field-label">Session name</label>
+        <input type="text" id="sessionName" placeholder="e.g. Friday Listening Party">
+      </div>
+
+      <div id="songBuilder" class="stack">
+        <label class="field-label">Songs (add at least one)</label>
+        <div id="songList" class="stack"></div>
+        <div class="add-row">
+          <input type="text" class="t" id="songTitle" placeholder="Song title">
+          <input type="text" class="a" id="songArtist" placeholder="Artist (optional)">
+          <button class="btn btn-ghost" id="addSongBtn" type="button">Add</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="createBtn">Create session &amp; get link</button>
+    </div>
+  </div>
+
+  <!-- ================= LOBBY / CONTROL ================= -->
+  <div id="viewControl" class="stack" style="display:none;">
+
+    <div class="card">
+      <div class="eyebrow">Share this with participants</div>
+      <div class="copy-row" style="margin-top:10px;">
+        <input type="text" id="joinLink" readonly>
+        <button class="btn btn-ghost" id="copyLinkBtn" type="button">Copy</button>
+      </div>
+      <div style="text-align:center; margin-top:14px;">
+        <img id="qrImg" alt="QR code to join" width="140" height="140" style="border-radius:12px; background:#fff; padding:8px;">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="spread" style="margin-bottom:12px;">
+        <div class="eyebrow">Joined</div>
+        <span id="joinCount" class="pill mono">0</span>
+      </div>
+      <div id="participantGrid" class="participant-grid">
+        <div class="empty-state" id="lobbyEmpty">Waiting for people to join…</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-block" id="startBtn">Start session</button>
+  </div>
+
+  <!-- ================= LIVE STAGE ================= -->
+  <div id="viewStage" class="stack" style="display:none;">
+    <div class="now-playing">
+      <div class="idx mono" id="stageIdx">SONG 1 / 1</div>
+      <h2 id="stageTitle">—</h2>
+      <div class="artist" id="stageArtist"></div>
+    </div>
+
+    <div id="stageZones" class="trackline">
+      <div class="zones">
+        <div class="zone skip"><div class="zone-label">Skip</div><div class="zone-count" data-count="skip">0</div></div>
+        <div class="zone neutral"><div class="zone-label">Neutral</div><div class="zone-count" data-count="neutral">0</div></div>
+        <div class="zone play"><div class="zone-label">Play</div><div class="zone-count" data-count="play">0</div></div>
+      </div>
+    </div>
+
+    <div class="live-controls">
+      <button class="btn btn-ghost" id="prevBtn">← Previous</button>
+      <button class="btn btn-primary" id="nextBtn">Next →</button>
+    </div>
+    <button class="btn btn-danger btn-block" id="endBtn">End session</button>
+  </div>
+
+  <!-- ================= RESULTS ================= -->
+  <div id="viewResults" class="stack" style="display:none;">
+    <div class="eyebrow">Session ended</div>
+    <div id="resultsList" class="card stack"></div>
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="common.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
