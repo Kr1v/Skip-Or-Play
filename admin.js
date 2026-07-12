@@ -91,7 +91,7 @@
 
   // ---------------- CONTROL / STAGE / RESULTS ----------------
   function setupJoinLink(id){
-    const link = location.origin + location.pathname.replace(/admin\.html$/, 'join.html') + '?session=' + id;
+    const link = location.origin + location.pathname.replace(/admin(\.html)?$/, 'join.html') + '?session=' + id;
     el('joinLink').value = link;
     el('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(link);
   }

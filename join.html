@@ -69,19 +69,23 @@
 <!-- ================= LIVE VOTING ================= -->
 <div id="viewStage" class="wrap" style="display:none;">
   <div class="now-playing">
-    <div class="idx mono" id="stageIdx">SONG 1 / 1</div>
-    <h2 id="stageTitle">—</h2>
-    <div class="artist" id="stageArtist"></div>
+    <div class="side-label play" data-choice="play">Play</div>
+    <div class="center-info">
+      <div class="idx mono" id="stageIdx">SONG 1 / 1</div>
+      <h2 id="stageTitle">—</h2>
+      <div class="artist" id="stageArtist"></div>
+    </div>
+    <div class="side-label skip" data-choice="skip">Skip</div>
   </div>
 
   <div id="stageZones" class="trackline">
     <div class="zones">
-      <div class="zone skip" data-choice="skip"><div class="zone-label">Skip</div><div class="zone-count" data-count="skip">0</div></div>
+      <div class="zone play" data-choice="play"><div class="zone-count" data-count="play">0</div></div>
       <div class="zone neutral" data-choice="neutral"><div class="zone-label">Neutral</div><div class="zone-count" data-count="neutral">0</div></div>
-      <div class="zone play" data-choice="play"><div class="zone-label">Play</div><div class="zone-count" data-count="play">0</div></div>
+      <div class="zone skip" data-choice="skip"><div class="zone-count" data-count="skip">0</div></div>
     </div>
   </div>
-  <div class="my-hint">Tap a zone to move your pfp — you can change your mind anytime.</div>
+  <div class="my-hint">Tap Play, Skip, or the center line to move your pfp — change your mind anytime.</div>
 </div>
 
 <!-- ================= ENDED ================= -->

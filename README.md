@@ -51,7 +51,7 @@ Test mode allows anyone to read/write anything, which is fine for a quick demo b
 }
 ```
 
-This still keeps things open enough for anonymous participants to join and vote (there's no login step in this app), but at least scopes writes to specific fields rather than the whole database. If you want real auth, you'd add Firebase Anonymous Auth — ask me if you want that added.
+This still keeps things open enough for anonymous participants to join and vote (there's no login step in this app), but at least scopes writes to specific fields rather than the whole database.
 
 ## 2. Run it locally
 

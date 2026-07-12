@@ -175,7 +175,12 @@ input[type="text"]::placeholder{ color: var(--text-dim); }
   text-overflow: ellipsis;
 }
 
-/* ---------- the fader line (signature element) ---------- */
+/* ---------- the vote line (signature element) ----------
+   A straight vertical line runs down the middle of the stage.
+   PLAY sits to its left, SKIP to its right. Avatars stack in an
+   overlapping vertical chain within whichever column they're in —
+   resting exactly on the center line means "neutral".
+*/
 .trackline{
   position: relative;
   border-radius: var(--radius);
@@ -183,42 +188,43 @@ input[type="text"]::placeholder{ color: var(--text-dim); }
   background: var(--bg-raised);
   overflow: hidden;
 }
-.trackline::before{
-  /* the physical groove */
-  content:"";
-  position: absolute;
-  top: 50%; left: 6%; right: 6%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--skip), var(--neutral) 50%, var(--play));
-  opacity: 0.35;
-  transform: translateY(-50%);
-}
 .zones{
   display:flex;
   position: relative;
-  min-height: 168px;
+  min-height: 360px;
   z-index: 1;
 }
 .zone{
   flex: 1;
   display:flex;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  gap: 14px 10px;
-  padding: 30px 10px 22px;
+  flex-direction: column;
+  align-items: center;
+  padding: 26px 8px 34px;
   cursor: pointer;
   transition: background 0.2s ease;
   position: relative;
 }
-.zone:not(:last-child){ border-right: 1px dashed rgba(255,255,255,0.06); }
+.zone.play{ align-items: flex-end; padding-right: 18%; }
+.zone.skip{ align-items: flex-start; padding-left: 18%; }
+.zone.neutral{ align-items: center; }
+.zone.neutral::before{
+  /* the physical center line */
+  content:"";
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--neutral) 12%, var(--neutral) 88%, transparent);
+  opacity: 0.5;
+  transform: translateX(-50%);
+}
 .zone-label{
   position:absolute;
   top: 10px; left: 50%; transform: translateX(-50%);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  opacity: 0.7;
 }
 .zone-count{
   position:absolute;
@@ -234,14 +240,37 @@ input[type="text"]::placeholder{ color: var(--text-dim); }
 .zone.play:hover{ background: var(--play-dim); }
 .zone.active-choice{ background: rgba(255,255,255,0.04); }
 
+/* chain overlap: each chip after the first overlaps the one above it */
+.zone .chip:not(:first-child){ margin-top: -16px; }
+.zone .chip{ box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+
 /* ---------- song now-playing header ---------- */
 .now-playing{
-  text-align:center;
-  padding: 10px 0 26px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 10px 4px 22px;
 }
+.now-playing .center-info{ flex:1; text-align:center; min-width:0; }
 .now-playing .idx{ color: var(--text-dim); font-family: var(--font-mono); font-size: 13px; }
-.now-playing h2{ font-size: 26px; margin-top: 4px; }
-.now-playing .artist{ color: var(--text-dim); margin-top: 4px; }
+.now-playing h2{ font-size: 22px; margin-top: 4px; white-space: nowrap; overflow:hidden; text-overflow:ellipsis; }
+.now-playing .artist{ color: var(--text-dim); margin-top: 4px; font-size: 13px; }
+.side-label{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  padding-bottom: 4px;
+  transition: opacity 0.15s ease;
+}
+.side-label:hover{ opacity: 0.75; }
+.side-label.play{ color: var(--play); }
+.side-label.skip{ color: var(--skip); }
 
 .empty-state{
   text-align:center;

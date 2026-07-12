@@ -66,7 +66,7 @@
     db.ref(`sessions/${sessionId}/votes/${currentIndex}/${me.id}`).set({ choice, ts: Date.now() });
   }
 
-  document.querySelectorAll('#viewStage .zone').forEach(zoneEl => {
+  document.querySelectorAll('#viewStage .zone, #viewStage .side-label').forEach(zoneEl => {
     zoneEl.addEventListener('click', () => {
       if (!lastData) return;
       castVote(zoneEl.dataset.choice, lastData.currentIndex);
